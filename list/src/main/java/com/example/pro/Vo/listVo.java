@@ -12,16 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class listVo {
 
-	private int bid;
-	private String btitle;
-	private String bcontent;
-	private String bname;
-	private int bgroup;
-	private int bstep;
-	private int bindent;
-	private Timestamp bdate;
-	private String bupload;
-	private int bhit;
+	private int b_num;
+	private String title;
+	private String b_content;
+	private String b_date;
+	private String id;
+	private String b_file;
+	private int hit;
 	
 	
 	

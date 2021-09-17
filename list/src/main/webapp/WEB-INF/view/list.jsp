@@ -11,20 +11,36 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/notice_list.css">
+  <style type="text/css">
+  #sort{
+  	position: absolute;
+  	top: 50%;
+  	left: 0%;
+  }
+  </style>
 </head>
 <body>
 <section>
     <h1>NOTICE</h1>
     <div class="wrapper">
-      <form action="/list" name="search" method="post">
+      <form action="list" method="post">
+      <div>
+        <select name="sort" id="sort">
+          <option value="">선택하세요</option>
+          <option value="soccer">축구</option>
+          <option value="basketball">농구</option>
+          <option value="baseball">야구</option>
+        </select>
+       </div>
+        <div>
         <select name="category" id="category">
           <option value="all">전체</option>
-          <option value="title">제목</option>
-          <option value="content">내용</option>
+          <option value="btitle">제목</option>
+          <option value="bcontent">내용</option>
         </select>
-
+		</div>
         <div class="title">
-          <input type="text" size="16" name="searchword">
+          <input type="text" size="16" name="word">
         </div>
   
         <button type="submit"><i class="fas fa-search"></i></button>
@@ -42,16 +58,18 @@
       <tr>
         <th>No.</th>
         <th>제목</th>
+        <th>종목</th>
         <th>작성일</th>
         <th>조회수</th>
       </tr>
       <!-- 내용부분 -->
-      <c:forEach items="${map.list }" var="list">
+      <c:forEach items="${map.list}" var="list">
       <tr>
-        <td><span class="table-notice">${list.bid }</span></td>
+        <td><span class="table-notice">${list.bid}</span></td>
         <td class="table-title">
-        <a href="">${list.btitle}</a>
+        <a href="view?bid=${list.bid}">${list.btitle}</a>
         </td>
+        <td>${list.sort}</td>
         <td>${list.bdate}</td>
         <td>${list.bhit}</td>
       </tr>
@@ -59,30 +77,11 @@
     </table>
 
     <ul class="page-num">
-    <c:if test="${map.pageNum != '1' }">
-      <a href="list?page=1"><li class="first"></li></a>
-     </c:if>
-   
-      <c:if test="${map.pageNum > 1 }">
-      <a href="list?page=${map.pageNum-1}"><li class="prev"></li></a>
-      </c:if>
-      <c:forEach begin="${map.startpage }" end="${map.endpage}" var="page">
-      <c:if test="${page != map.pageNum }">
-      <li class="num" style="background: gray; color: white;"><a href="list?page=${page}&&category=${map.category}&&searchword=${map.searchword}"><div>${page}</div></a></li>
-      </c:if>
-      <c:if test="${page == map.pageNum }">
-      <li class="num"><div>${page}</div></li>
-      </c:if>
-      </c:forEach>
-      
-        <c:if test="${map.pageNum < map.MaxPage }">
-      	<a href="list?page=${map.pageNum+1}"><li class="next"></li></a>
-      	</c:if>
-      
-      
-      <c:if test="${map.pageNum < map.MaxPage }">
-      <a href="list?page=${map.MaxPage}"><li class="last"></li></a>
-     </c:if>
+      <li class="first"></li>
+      <li class="prev"></li>
+      <li class="num"><div>1</div></li>
+      <li class="next"></li>
+      <li class="last"></li>
     </ul>
 
     <a href="write_view.jsp"><div class="write">쓰기</div></a>

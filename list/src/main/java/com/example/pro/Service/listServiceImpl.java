@@ -1,6 +1,7 @@
 package com.example.pro.Service;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.pro.Mapper.listMapper;
+import com.example.pro.Vo.Cvo;
+import com.example.pro.Vo.boardVo1;
 import com.example.pro.Vo.listVo;
 
 @Service
@@ -16,80 +19,46 @@ public class listServiceImpl implements listService {
 	@Autowired
 	listMapper listMapper;
 
-	//리스트
+	//list
 	@Override
-	public Map<String, Object> list(int page,String category, String searchword) {
+	public Map<String, Object> list() {
 
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
-		ArrayList<listVo> list = new ArrayList<listVo>();
-
-		int listCount =listMapper.listCount(category,searchword);
-		System.out.println("카운터값"+listCount);
+		Map<String, Object> map = new HashMap<String, Object>();//map객체선언
+		ArrayList<boardVo1> list = new ArrayList<boardVo1>(); //객체 배열 선언 여러가지 값을 받기 위해서 사용한다.
 		
 		
-		int pageNum = page;
-		int pageCount = 5;
-		int listNum = 10;
-		int MaxPage = ((int)((double)listCount/listNum+0.99));
-		int startpage = (((int)((double)pageNum/pageCount+0.99))-1)*pageCount+1; //하단넘버링 첫번째 수
-		int endpage = startpage+pageCount-1; //하단넘버링 마지막 수
-		if(endpage>MaxPage) endpage=MaxPage; // 
-		System.out.println("MaxPage"+MaxPage);
-		
-		int startrow = (pageNum*listNum)-9;
-		int endrow = pageNum*listNum;
-		
-		
-		list = listMapper.list(startrow,endrow,category,searchword);
+		list = listMapper.list();  
 		
 		map.put("list", list);
-		map.put("category", category);
-		map.put("searchword", searchword);
-		map.put("pageNum", pageNum);
-		map.put("MaxPage", MaxPage);
-		map.put("startpage", startpage);
-		map.put("endpage", endpage);
+		
 		
 		return map;
 	}
 
 	
+	//view
 	@Override
-	public Map<String, Object> listserach(int page,String category, String searchword) {
+	public Map<String, Object> view(int bid) {
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();//map객체선언
 		
-		ArrayList<listVo> list = new ArrayList<listVo>();
-
-		int listCount =listMapper.listserachCount(category,searchword);
+		boardVo1 boardVo1 = listMapper.view(bid);
 		
-		System.out.println("카운터값"+listCount);
-		int pageNum = page;
-		int pageCount = 5;
-		int listNum = 10;
-		int MaxPage = ((int)((double)listCount/listNum+0.99));
-		int startpage = (((int)((double)pageNum/pageCount+0.99))-1)*pageCount+1; //하단넘버링 첫번째 수
-		int endpage = startpage+pageCount-1; //하단넘버링 마지막 수
-		if(endpage>MaxPage) endpage=MaxPage; // 
-		System.out.println("MaxPage"+MaxPage);
-		
-		int startrow = (pageNum*listNum)-9;
-		int endrow = pageNum*listNum;
-		
-		
-		list = listMapper.listserach(startrow,endrow,category,searchword);
-		
-		map.put("list", list);
-		map.put("category", category);
-		map.put("searchword", searchword);
-		map.put("pageNum", pageNum);
-		map.put("MaxPage", MaxPage);
-		map.put("startpage", startpage);
-		map.put("endpage", endpage);
+		map.put("boardVo1", boardVo1);
 		
 		return map;
 	}
 
+
+	//댓글 스기
+	@Override
+	public Cvo commentWrite(String cid, String ccoment) {
+	
+		listMapper.commentWrite(cid,ccoment);
+		
+		return null;
+	}
+	
+	
+	
 }

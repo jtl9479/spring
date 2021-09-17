@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.pro.Service.listService;
+import com.example.pro.Vo.Cvo;
 import com.example.pro.Vo.listVo;
 
 @Controller
@@ -23,40 +25,43 @@ public class listController {
 	listService listService;
 	
 	
-	@RequestMapping("index")
+	@GetMapping("index")
 	public String index() {
 		return "/index";
 	}
 	
-	@GetMapping("list")
-	public String list(@RequestParam (defaultValue = "1") int page ,
-			@RequestParam (defaultValue = "all") String category,
-			@RequestParam (defaultValue = "")  String searchword,
-			Model model) {
-		
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map = listService.list(page,category,searchword);
-		
-		
-		model.addAttribute("map", map);
-		
-		return "/list";
+	@PostMapping("index")
+	public String index(@RequestParam String m_id,@RequestParam String m_pw) {
+		return "/index";
 	}
 	
 	
-	@PostMapping("list")
-	public String listSearch(@RequestParam (defaultValue = "1") int page ,
-			@RequestParam String category,
-			@RequestParam String searchword,
-			Model model) {
+	@RequestMapping("ajaxtest")
+	public String ajaxtest() {
+		return "/ajaxtest";
+	}
+	
+	@RequestMapping("ajax1")
+	public String ajax1() {
+		return "/ajax1";
+	}
+	
+	@PostMapping("ajaxpost")
+	@ResponseBody
+	public String ajaxpost(@RequestParam String ccoment,
+			@RequestParam String cid
+			) {
+		
+		System.out.println("값");
+		System.out.println(ccoment);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map = listService.listserach(page,category,searchword);
 		
+		listService.commentWrite(cid,ccoment);
 		
-		model.addAttribute("map", map);
+		map.put("coment", ccoment);
 		
-		return "/list";
+		return "map";
 	}
+	
 }
